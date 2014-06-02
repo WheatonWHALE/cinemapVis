@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta name="viewport" content="initial-scale=1.0, user-scalable=no" />
+    <style type="text/css">
+      html { height: 100% }
+      body { height: 100%; margin: 0; padding: 0 }
+      #map-canvas { height: 100% }
+    </style>
+    <script type="text/javascript"
+      src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCzk427UkCDu0YqwZKEY0hh_5685wBXykY&sensor=fales">
+    </script>
+    <script type="text/javascript">
+      function initialize() {
+        var myLatlng = new google.maps.LatLng(41.965003, -71.183864);
+        var mapOptions = {
+          zoom: 5,
+          center: myLatlng
+        } // ends Mapoption
+        
+        var map = new google.maps.Map(document.getElementById("map-canvas"), mapOptions);
+
+
+        // To add the marker to the map, use the 'map' property
+        var maxLat = 90;
+        var minLat = -90;
+        var maxLong = 180;
+        var minLong = -180;
+
+        for (var i = 0; i < 100; i++) {
+          var Lat = (Math.random() * (maxLat - minLat) + minLat);
+          var Long = (Math.random() * (maxLong - minLong) + minLong);
+          var myLatlng = new google.maps.LatLng(Long, Lat);
+
+          var marker = new google.maps.Marker({
+            position: myLatlng,
+            map: map,
+            title:"Hello World!"
+          }); // ends Marker 
+        }; // ends for loop
+        
+      }// end function
+      google.maps.event.addDomListener(window, 'load', initialize);
+    </script>
+  </head>
+  <body>
+    <div id="map-canvas"/>
+  </body>
+</html>
