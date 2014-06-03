@@ -12,7 +12,7 @@
         margin: 0px;
         padding: 0px
       }
-      #panel {
+      /*#panel {
         position: absolute;
         top: 5px;
         left: 50%;
@@ -21,7 +21,7 @@
         background-color: #fff;
         padding: 5px;
         border: 1px solid #999;
-      }
+      }*/
     </style>
     
     <script src="https://maps.googleapis.com/maps/api/js?v=3.exp&sensor=false"></script>
@@ -32,15 +32,31 @@
     <script type="text/javascript">
     var geocoder;
     var map;
+    var TheaterAddress =  [
+                        "700 South Main Street, Sharon, MA",
+                        "24 Patriot Place, Foxboro, MA",
+                        "640 South Washington Street, North Attleboro, MA",
+                        "2 Galleria Mall Drive, Taunton, MA",
+                        "207 Swansea Mall Drive, Swansea, MA",
+                        "100 Commerce Way, Seekonk, MA",
+                        "652 East Washington St., North Attleboro, MA",
+                        "60 Newport Avenue, Rumford, RI",
+                        "73 Mazzeo Drive, Randolph, MA" 
+                      ];
+
       function initialize() {
         geocoder = new google.maps.Geocoder();
         var myLatlng = new google.maps.LatLng(39.571822, -98.964844);
         var mapOptions = {
           zoom: 3,
           center: myLatlng
-        } // ends Mapoption
+        }; // ends Mapoption
         
         map = new google.maps.Map(document.getElementById("map-canvas"), mapOptions);
+
+        for (var i = 0; i < TheaterAddress.length; i++) {
+          geocodeThatAddress(TheaterAddress[i])
+        };
 
 
         // To add the marker to the map, use the 'map' property
@@ -61,33 +77,50 @@
         //   }); // ends Marker 
         // }; // ends for loop
         
-      }// end function
+      };// end function
       
 
-      function codeAddress() {
-        var address = document.getElementById("address").value;
-        geocoder.geocode( { 'address': address}, function(results, status) {
-          if (status == google.maps.GeocoderStatus.OK) {
-            map.setCenter(results[0].geometry.location);
-            var marker = new google.maps.Marker({
-              map: map,
-              position: results[0].geometry.location
-            });
-          } 
+      // function codeAddress() {
+      //   var address = document.getElementById("address").value;
+      //   geocoder.geocode( { 'address': address}, function(results, status) {
+      //     if (status == google.maps.GeocoderStatus.OK) {
+      //       map.setCenter(results[0].geometry.location);
+      //       var marker = new google.maps.Marker({
+      //         map: map,
+      //         position: results[0].geometry.location
+      //       });
+      //     } 
+      //     else {
+      //       alert("Geocode was not successful for the following reason: " + status);
+      //     }
+      //   });
+      // }
+
+      function geocodeThatAddress(Address) {
+          geocoder.geocode( {'address' : Address }, function(results, status) {
+            if (status == google.maps.GeocoderStatus.OK) {
+             map.setCenter(results[0].geometry.location);
+              var marker = new google.maps.Marker({
+                map: map,
+                position: results[0].geometry.location,
+                title: Address
+              });
+            } 
           else {
             alert("Geocode was not successful for the following reason: " + status);
           }
         });
       }
+
     google.maps.event.addDomListener(window, 'load', initialize);
     </script>
   
   </head>
     <body>
-      <div id="panel">
+      <!-- <div id="panel">
         <input id="address" type="textbox" value="Sydney, NSW">
         <input type="button" value="Geocode" onclick="codeAddress()">
-      </div>
+      </div> -->
       <div id="map-canvas"></div>
     </body>
 </html>
