@@ -59,7 +59,7 @@
         //   geocodeThatAddress(TheaterAddress[i])
         // };
 
-        $.getJSON( "http://infinite-citadel-8572.herokuapp.com/api/0.1/venues/", function( data ){
+        $.getJSON( "http://localhost:5000/api/0.1/venues/", function( data ){
             for (var i = 0; i < data.length; i++) {
               geocodeThatAddress(data[i]);
             }; // ends for loop
@@ -103,13 +103,13 @@
       // }
 
       function geocodeThatAddress(Address) {
-          geocoder.geocode( {'address' : Address.street +" "+ Address.city +" "+ Address.state}, function(results, status) {
+          geocoder.geocode( {'address' : Address.address.street +" "+ Address.address.city +" "+ Address.address.state}, function(results, status) {
             if (status == google.maps.GeocoderStatus.OK) {
              map.setCenter(results[0].geometry.location);
               var marker = new google.maps.Marker({
                 map: map,
                 position: results[0].geometry.location,
-                title: Address.name + "<br>" + Address.street + Address.city + Address.state 
+                title: Address.name + " || " + Address.address.street + " " + Address.address.city + " " + Address.address.state 
               });
             } 
           else {
