@@ -25,6 +25,7 @@
     </style>
     
     <script src="https://maps.googleapis.com/maps/api/js?v=3.exp&sensor=false"></script>
+    <script src="jquery-1.11.1.min.js"></script>
     <!--<script type="text/javascript"
       src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCzk427UkCDu0YqwZKEY0hh_5685wBXykY&sensor=fales">
     </script> -->
@@ -54,9 +55,15 @@
         
         map = new google.maps.Map(document.getElementById("map-canvas"), mapOptions);
 
-        for (var i = 0; i < TheaterAddress.length; i++) {
-          geocodeThatAddress(TheaterAddress[i])
-        };
+        // for (var i = 0; i < TheaterAddress.length; i++) {
+        //   geocodeThatAddress(TheaterAddress[i])
+        // };
+
+        $.getJSON( "http://infinite-citadel-8572.herokuapp.com/api/0.1/venues/", function( data ){
+            for (var i = 0; i < data.length; i++) {
+              geocodeThatAddress(data[i]);
+            }; // ends for loop
+        }); // ends function
 
 
         // To add the marker to the map, use the 'map' property
@@ -75,8 +82,7 @@
         //     map: map,
         //     title: "Latitude: "+ Lat + " Lonitude: " + Long 
         //   }); // ends Marker 
-        // }; // ends for loop
-        
+        // }; // ends for loop   
       };// end function
       
 
@@ -97,13 +103,13 @@
       // }
 
       function geocodeThatAddress(Address) {
-          geocoder.geocode( {'address' : Address }, function(results, status) {
+          geocoder.geocode( {'address' : Address.street +" "+ Address.city +" "+ Address.state}, function(results, status) {
             if (status == google.maps.GeocoderStatus.OK) {
              map.setCenter(results[0].geometry.location);
               var marker = new google.maps.Marker({
                 map: map,
                 position: results[0].geometry.location,
-                title: Address
+                title: Address.name + "<br>" + Address.street + Address.city + Address.state 
               });
             } 
           else {
