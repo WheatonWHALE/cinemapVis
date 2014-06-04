@@ -59,11 +59,27 @@
         //   geocodeThatAddress(TheaterAddress[i])
         // };
 
-        $.getJSON( "http://localhost:5000/api/0.1/venues/", function( data ){
-            for (var i = 0; i < data.length; i++) {
-              geocodeThatAddress(data[i]);
+        $.getJSON("http://infinite-citadel-8572.herokuapp.com/api/0.1/showings/", function( showingData ){
+            for (var i = 0; i < showingData.length; i++) {
+              //geocodeThatAddress(data[i]);
+              getVenueData(showingData[i]);
             }; // ends for loop
         }); // ends function
+
+        function getVenueData (showing) {
+          //console.log("http://infinite-citadel-8572.herokuapp.com/api/0.1/venues/" + showing.venue_id);
+          $.getJSON("http://infinite-citadel-8572.herokuapp.com/api/0.1/venues/" + showing.venue_id, function( veuneData ){
+            getFeatureData(showing, veuneData);
+          });
+        };
+
+        function getFeatureData (showing, veuneData) {
+          //console.log("http://infinite-citadel-8572.herokuapp.com/api/0.1/features/" + showing.feature_id);
+          $.getJSON("http://infinite-citadel-8572.herokuapp.com/api/0.1/features/" + showing.feature_id, function(featureData){
+            geocodeThatAddress(showing, veuneData, featureData);
+          });
+        };
+
 
 
         // To add the marker to the map, use the 'map' property
@@ -102,14 +118,18 @@
       //   });
       // }
 
-      function geocodeThatAddress(Address) {
-          geocoder.geocode( {'address' : Address.address.street +" "+ Address.address.city +" "+ Address.address.state}, function(results, status) {
+      function geocodeThatAddress(showing, veuneData, featureData) {
+        //console.log(showing);
+        // if (veuneData.address.city === "Randolph"){
+        //   console.log(veuneData);
+        // }
+          geocoder.geocode( {'address' : veuneData.address.street +" "+ veuneData.address.city +" "+ veuneData.address.state}, function(results, status) {
             if (status == google.maps.GeocoderStatus.OK) {
              map.setCenter(results[0].geometry.location);
               var marker = new google.maps.Marker({
                 map: map,
                 position: results[0].geometry.location,
-                title: Address.name + " || " + Address.address.street + " " + Address.address.city + " " + Address.address.state 
+                title: "Theater name: " + veuneData.name + " || Address: " + veuneData.address.street + " " + veuneData.address.city + " " + veuneData.address.state + " || Feature: " + featureData.title + " || Show Time: " + showing.showtime 
               });
             } 
           else {
