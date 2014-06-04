@@ -12,7 +12,7 @@
         margin: 0px;
         padding: 0px
       }
-      /*#panel {
+      #panel {
         position: absolute;
         top: 5px;
         left: 50%;
@@ -21,14 +21,14 @@
         background-color: #fff;
         padding: 5px;
         border: 1px solid #999;
-      }*/
+      }
     </style>
     
-    <script src="https://maps.googleapis.com/maps/api/js?v=3.exp&sensor=false"></script>
+    <!-- <script src="https://maps.googleapis.com/maps/api/js?v=3.exp&sensor=false"></script> -->
     <script src="jquery-1.11.1.min.js"></script>
-    <!--<script type="text/javascript"
+    <script type="text/javascript"
       src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCzk427UkCDu0YqwZKEY0hh_5685wBXykY&sensor=fales">
-    </script> -->
+    </script> 
     
     <script type="text/javascript">
     var geocoder;
@@ -52,19 +52,51 @@
           zoom: 3,
           center: myLatlng
         }; // ends Mapoption
-        
+      
         map = new google.maps.Map(document.getElementById("map-canvas"), mapOptions);
+        
+        // $.getJSON("http://infinite-citadel-8572.herokuapp.com/api/0.1/showings/", function( showingData ){
+        //     console.log("Got Showings Data!")
+        //     for (var i = 0; i < showingData.length; i++) {
+        //       //geocodeThatAddress(data[i]);
+        //       getVenueData(showingData[i]);
+        //     }; // ends for loop
+        // }); // ends function
 
+        $.getJSON("http://infinite-citadel-8572.herokuapp.com/api/0.1/showings/", function( showingData ){
+            console.log("Got Showings Data!");
+            $.getJSON("http://infinite-citadel-8572.herokuapp.com/api/0.1/venues/" , function( venueData ){
+              console.log("Got Venues Data!");
+              $.getJSON("http://infinite-citadel-8572.herokuapp.com/api/0.1/features/", function(featureData){
+                console.log("Got Features Data!");
+                for (var i = 0; i < showingData.length; i++) {
+                  for (var n = 0; n < venueData.length; n++) {
+                    if (showingData[i].venue_id === venueData[n]._id) {
+                      var veuneDataIndex = venueData[n];
+                      break;
+                    }; // ends if
+                  }; // ends for
+                  for (var x = 0; x < featureData.length; x++) {
+                    if (showingData[i].feature_id === featureData[x]._id) {
+                      //console.log(showingData[i].feature_id);
+                      var featureDataIndex = featureData[x];
+                      break;
+                    }; // ends if 
+                  }; // ends second 
+                  //geocodeThatAddress(showingData[i], veuneDataIndex, featureDataIndex);
+                  RandomPlacement(showingData[i], veuneDataIndex, featureDataIndex);
+
+                }; // ends large for loop
+
+              }); // ends featureData
+            }); // ends venueData
+        }); // ends showingData
+      
+      };// ends initialize
+      
         // for (var i = 0; i < TheaterAddress.length; i++) {
         //   geocodeThatAddress(TheaterAddress[i])
         // };
-
-        $.getJSON("http://infinite-citadel-8572.herokuapp.com/api/0.1/showings/", function( showingData ){
-            for (var i = 0; i < showingData.length; i++) {
-              //geocodeThatAddress(data[i]);
-              getVenueData(showingData[i]);
-            }; // ends for loop
-        }); // ends function
 
         function getVenueData (showing) {
           //console.log("http://infinite-citadel-8572.herokuapp.com/api/0.1/venues/" + showing.venue_id);
@@ -99,7 +131,7 @@
         //     title: "Latitude: "+ Lat + " Lonitude: " + Long 
         //   }); // ends Marker 
         // }; // ends for loop   
-      };// end function
+      //};// end function
       
 
       // function codeAddress() {
@@ -117,19 +149,38 @@
       //     }
       //   });
       // }
+      function RandomPlacement (showing, venueData, featureData) {
+        var maxLat = 90;
+        var minLat = -90;
+        var maxLong = 180;
+        var minLong = -180;
+       
+        var Lat = (Math.random() * (maxLat - minLat) + minLat);
+        var Long = (Math.random() * (maxLong - minLong) + minLong);
+        var myLatlng = new google.maps.LatLng(Lat, Long);
+        console.log(myLatlng);
 
-      function geocodeThatAddress(showing, veuneData, featureData) {
+        var marker = new google.maps.Marker({
+          position: myLatlng,
+          map: map,
+          title: "Theater name: " + venueData.name + " || Address: " + venueData.address.street + " " + venueData.address.city + " " + venueData.address.state + " || Feature: " + featureData.title + " || Show Time: " + showing.showtime 
+
+        }); // ends Marker 
+        
+      };
+      function geocodeThatAddress(showing, venueData, featureData) {
         //console.log(showing);
         // if (veuneData.address.city === "Randolph"){
         //   console.log(veuneData);
         // }
-          geocoder.geocode( {'address' : veuneData.address.street +" "+ veuneData.address.city +" "+ veuneData.address.state}, function(results, status) {
+          console.log(venueData.address.city);
+          geocoder.geocode( {'address' : venueData.address.street +" "+ venueData.address.city +" "+ venueData.address.state}, function(results, status) {
             if (status == google.maps.GeocoderStatus.OK) {
              map.setCenter(results[0].geometry.location);
               var marker = new google.maps.Marker({
                 map: map,
                 position: results[0].geometry.location,
-                title: "Theater name: " + veuneData.name + " || Address: " + veuneData.address.street + " " + veuneData.address.city + " " + veuneData.address.state + " || Feature: " + featureData.title + " || Show Time: " + showing.showtime 
+                title: "Theater name: " + venueData.name + " || Address: " + venueData.address.street + " " + venueData.address.city + " " + venueData.address.state + " || Feature: " + featureData.title + " || Show Time: " + showing.showtime 
               });
             } 
           else {
@@ -143,10 +194,10 @@
   
   </head>
     <body>
-      <!-- <div id="panel">
-        <input id="address" type="textbox" value="Sydney, NSW">
+      <div id="panel">
+        <!-- <input id="address" type="textbox" value="Sydney, NSW"> -->
         <input type="button" value="Geocode" onclick="codeAddress()">
-      </div> -->
+      </div>
       <div id="map-canvas"></div>
     </body>
 </html>
