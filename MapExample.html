@@ -24,25 +24,25 @@
       }
     </style>
     
-    <!-- <script src="https://maps.googleapis.com/maps/api/js?v=3.exp&sensor=false"></script> -->
+    <script src="https://maps.googleapis.com/maps/api/js?v=3.exp&sensor=false"></script>
     <script src="jquery-1.11.1.min.js"></script>
-    <script type="text/javascript"
+    <!-- <script type="text/javascript"
       src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCzk427UkCDu0YqwZKEY0hh_5685wBXykY&sensor=fales">
-    </script> 
+    </script> -->
     
     <script type="text/javascript">
     var geocoder;
     var map;
     var TheaterAddress =  [
-                        "700 South Main Street, Sharon, MA",
-                        "24 Patriot Place, Foxboro, MA",
-                        "640 South Washington Street, North Attleboro, MA",
-                        "2 Galleria Mall Drive, Taunton, MA",
-                        "207 Swansea Mall Drive, Swansea, MA",
-                        "100 Commerce Way, Seekonk, MA",
-                        "652 East Washington St., North Attleboro, MA",
-                        "60 Newport Avenue, Rumford, RI",
-                        "73 Mazzeo Drive, Randolph, MA" 
+                        "700 South Main Street, Sharon, MA", // Latitude : 42.094707 | Longitude : -71.219491
+                        "24 Patriot Place, Foxboro, MA", // Latitude : 42.094218 | Longitude : -71.26565
+                        "640 South Washington Street, North Attleboro, MA", // Latitude : 41.954466 | Longitude : -71.341838
+                        "2 Galleria Mall Drive, Taunton, MA", // Latitude : 41.864427 | Longitude : -71.051431
+                        "207 Swansea Mall Drive, Swansea, MA", // //Latitude : 41.756302 | Longitude : -71.217185
+                        "100 Commerce Way, Seekonk, MA", // Latitude : 41.797065 | Longitude : -71.323079
+                        "652 East Washington St., North Attleboro, MA", // Latitude : 41.985304 | Longitude : -71.326971
+                        "60 Newport Avenue, Rumford, RI", // Latitude : 41.857816 | Longitude : -71.351147
+                        "73 Mazzeo Drive, Randolph, MA" // Latitude : 42.163113 | Longitude : -71.061668
                       ];
 
       function initialize() {
@@ -84,7 +84,8 @@
                     }; // ends if 
                   }; // ends second 
                   //geocodeThatAddress(showingData[i], veuneDataIndex, featureDataIndex);
-                  RandomPlacement(showingData[i], veuneDataIndex, featureDataIndex);
+                  //RandomPlacement(showingData[i], veuneDataIndex, featureDataIndex);
+                  placementOfVenues(showingData[i], veuneDataIndex, featureDataIndex);
 
                 }; // ends large for loop
 
@@ -149,15 +150,9 @@
       //     }
       //   });
       // }
-      function RandomPlacement (showing, venueData, featureData) {
-        var maxLat = 90;
-        var minLat = -90;
-        var maxLong = 180;
-        var minLong = -180;
-       
-        var Lat = (Math.random() * (maxLat - minLat) + minLat);
-        var Long = (Math.random() * (maxLong - minLong) + minLong);
-        var myLatlng = new google.maps.LatLng(Lat, Long);
+
+      function placementOfVenues (showing, venueData, featureData) {
+        var myLatlng = new google.maps.LatLng(venueData.geocode.latitude, venueData.geocode.longitude);
         console.log(myLatlng);
 
         var marker = new google.maps.Marker({
@@ -168,6 +163,29 @@
         }); // ends Marker 
         
       };
+
+
+      // function RandomPlacement (showing, venueData, featureData) {
+      //   var maxLat = 90;
+      //   var minLat = -90;
+      //   var maxLong = 180;
+      //   var minLong = -180;
+       
+      //   var Lat = (Math.random() * (maxLat - minLat) + minLat);
+      //   var Long = (Math.random() * (maxLong - minLong) + minLong);
+      //   var myLatlng = new google.maps.LatLng(Lat, Long);
+      //   console.log(myLatlng);
+
+      //   var marker = new google.maps.Marker({
+      //     position: myLatlng,
+      //     map: map,
+      //     title: "Theater name: " + venueData.name + " || Address: " + venueData.address.street + " " + venueData.address.city + " " + venueData.address.state + " || Feature: " + featureData.title + " || Show Time: " + showing.showtime 
+
+      //   }); // ends Marker 
+        
+      // };
+
+
       function geocodeThatAddress(showing, venueData, featureData) {
         //console.log(showing);
         // if (veuneData.address.city === "Randolph"){
