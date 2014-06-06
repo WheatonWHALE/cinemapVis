@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>Features</title>
+		<link href="../featuresFrontEnd.css" rel="stylesheet" type="text/css">
+		<script src ="../jquery-1.11.1.min.js"> </script>
+	</head>
+
+	<body>
+		<div id ="header">
+		<!-- <br> -->
+		<p></p>
+			<p>Features</p>
+		</div>
+		<div class="content">
+			<div class="features">
+				<div class="firstCol">
+					<p>Title</p>
+				</div>
+				<div class="secCol">
+					<p>External</p>
+				</div>
+			</div>			
+		</div> <!-- ends content div -->
+		<script type="text/javascript">
+			
+			$( document ).ready(function() {
+    			console.log( "ready!" );
+    			getAllFeatures();
+			});
+
+			function populateContentDiv (data) {
+				$.each(data, function(index, val) {
+					// console.log("in each");
+					$('.content').append("<div class = 'features'><div class = 'title'><br>" +data[index]['title']+"<br></div><div class = 'external'><br>"+data[index]['external']+"<button class = 'delete'>Remove</button><br></div></div>");
+					// $('.content').append("<div>" +data[index]['title']+"</div><br>").addClass('features');
+					// // console.log("got title");
+					// $('.content').append("<div>"+data[index]['external']+"</div><br>").addClass('features');
+				});
+			}
+			function getAllFeatures () {
+				$.ajax({
+					type: 'GET',
+					url: 'http://infinite-citadel-8572.herokuapp.com/api/0.1/features/',
+					success: function(data) {
+						console.log("Getting all the features");
+						populateContentDiv(data);
+					}
+				});
+			}
+		</script>
+
+	</body>
+</html>
