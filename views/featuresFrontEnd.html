@@ -32,7 +32,7 @@
 			function populateContentDiv (data) {
 				$.each(data, function(index, val) {
 					// console.log("in each");
-					$('.content').append("<div class = 'features'><div class = 'title'><br>" +data[index]['title']+"<br></div><div class = 'external'><br>"+data[index]['external']+"<button class = 'delete'>Remove</button><br></div></div>");
+					$('.content').append("<div class = 'features', id ="+data[index]['_id']+"><div class = 'title'><br>" +data[index]['title']+"<br></div><div class = 'external'><br>"+data[index]['external']+"<button class = 'delete', id = "+data[index]['_id']+">Remove</button><br></div></div>");
 					// $('.content').append("<div>" +data[index]['title']+"</div><br>").addClass('features');
 					// // console.log("got title");
 					// $('.content').append("<div>"+data[index]['external']+"</div><br>").addClass('features');
@@ -48,6 +48,10 @@
 					}
 				});
 			}
+
+			$('.delete').click(function() {
+				var toDelete = $("#"+data[index]);
+			})
 		</script>
 
 	</body>
