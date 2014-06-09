@@ -21,6 +21,13 @@
 				</div>
 			</div>			
 		</div> <!-- ends content div -->
+		<div class="create">
+			<form>
+				<p>Please type a name of a feature and click Add:</p>
+				<input class="inputfield" type="featureName" name ="featureName" />
+				<button class="add" name="add" type="button">Add</button> 
+			</form>
+		</div>
 		<script type="text/javascript">
 			
 			$( document ).ready(function() {
@@ -55,9 +62,7 @@
 			 		type: 'DELETE',
 			 		url: 'http://infinite-citadel-8572.herokuapp.com/api/0.1/features/'+featureToDelete,
 			 		success: function(data) {
-			 			console.log("has been deleted!")
-
-			 			// body...
+			 			console.log("has been deleted!");
 			 		}
 			 	});
 			};
@@ -68,6 +73,21 @@
 			 	deleteFromDatabase(idToDelete);
 
 			}; // ends function
+
+			function createFeature (toBeCreated) {
+				$.ajax({
+					type: 'POST',
+					url: 'http://infinite-citadel-8572.herokuapp.com/api/0.1/features/?title='+toBeCreated,
+					success: function(data) {
+						console.log("Created Feature");
+					}
+				})
+			}
+
+			$('.add').click(function(){
+				var x = $('.inputfield').val();
+				createFeature(x);
+			});
 
 		</script>
 
