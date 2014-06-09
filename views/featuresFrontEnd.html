@@ -8,7 +8,6 @@
 
 	<body>
 		<div id ="header">
-		<!-- <br> -->
 		<p></p>
 			<p>Features</p>
 		</div>
@@ -27,17 +26,17 @@
 			$( document ).ready(function() {
     			console.log( "ready!" );
     			getAllFeatures();
-			});
+			}); // ends ready
 
 			function populateContentDiv (data) {
 				$.each(data, function(index, val) {
-					// console.log("in each");
-					$('.content').append("<div class = 'features', id ="+data[index]['_id']+"><div class = 'title'><br>" +data[index]['title']+"<br></div><div class = 'external'><br>"+data[index]['external']+"<button class = 'delete', id = "+data[index]['_id']+">Remove</button><br></div></div>");
-					// $('.content').append("<div>" +data[index]['title']+"</div><br>").addClass('features');
-					// // console.log("got title");
-					// $('.content').append("<div>"+data[index]['external']+"</div><br>").addClass('features');
-				});
-			}
+					ID = data[index]['_id'];
+					argument = data[index]['_id'];
+					console.log(ID);
+					$('.content').append("<div class = 'features', id =" + data[index]['_id'] + "><div class = 'title'><br>" + data[index]['title'] + "<br></div><div class = 'external'><br>" + data[index]['external'] + "<button class = 'delete', onclick = "+"DeleteDomElement('"+argument+"')>Remove</button><br></div></div>");
+				}); // ends each
+			}; // ends function
+
 			function getAllFeatures () {
 				$.ajax({
 					type: 'GET',
@@ -45,18 +44,23 @@
 					success: function(data) {
 						console.log("Getting all the features");
 						populateContentDiv(data);
-					}
-				});
-			}
+					} // ends success
+				}); // ends ajax
+			}; // ends function
 
-			function DeleteDomElement (toDelete) {
-				// body...
-			}
+			function DeleteDomElement (idToDelete) {
+			 	console.log(idToDelete);
+			 	$("#"+idToDelete).remove();
 
-			$('.delete').click(function() {
-				var toDelete = $("#"+data[index]);
-				DeleteDomElement(toDelete);
-			})
+			 	$.ajax({
+			 		type: 'DELETE',
+			 		url: 'http://infinite-citadel-8572.herokuapp.com/api/0.1/features/',
+			 		success: function(idToDelete) {
+			 			// body...
+			 		}
+			 	})
+			}; // ends function
+
 		</script>
 
 	</body>
