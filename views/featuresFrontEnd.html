@@ -37,6 +37,8 @@
 				}); // ends each
 			}; // ends function
 
+			
+
 			function getAllFeatures () {
 				$.ajax({
 					type: 'GET',
@@ -48,17 +50,23 @@
 				}); // ends ajax
 			}; // ends function
 
+			function deleteFromDatabase (featureToDelete) {
+				$.ajax({
+			 		type: 'DELETE',
+			 		url: 'http://infinite-citadel-8572.herokuapp.com/api/0.1/features/'+featureToDelete,
+			 		success: function(data) {
+			 			console.log("has been deleted!")
+
+			 			// body...
+			 		}
+			 	});
+			};
+
 			function DeleteDomElement (idToDelete) {
 			 	console.log(idToDelete);
 			 	$("#"+idToDelete).remove();
+			 	deleteFromDatabase(idToDelete);
 
-			 	$.ajax({
-			 		type: 'DELETE',
-			 		url: 'http://infinite-citadel-8572.herokuapp.com/api/0.1/features/',
-			 		success: function(idToDelete) {
-			 			// body...
-			 		}
-			 	})
 			}; // ends function
 
 		</script>
