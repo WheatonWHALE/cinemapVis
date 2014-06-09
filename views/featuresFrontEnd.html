@@ -44,8 +44,6 @@
 				}); // ends each
 			}; // ends function
 
-			
-
 			function getAllFeatures () {
 				$.ajax({
 					type: 'GET',
@@ -80,6 +78,10 @@
 					url: 'http://infinite-citadel-8572.herokuapp.com/api/0.1/features/?title='+toBeCreated,
 					success: function(data) {
 						console.log("Created Feature");
+						//var index = data.length-1;
+						console.log(data);
+						argument = data['_id'];
+						$('.content').append("<div class = 'features', id =" + data['_id'] + "><div class = 'title'><br>" + data['title'] + "<br></div><div class = 'external'><br>" + data['external'] + "<button class = 'delete', onclick = "+"DeleteDomElement('"+argument+"')>Remove</button><br></div></div>");
 					}
 				})
 			}
