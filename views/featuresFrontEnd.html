@@ -17,6 +17,7 @@
 					<p>Title</p>
 				</div>
 				<div class="secCol">
+
 					<p>External</p>
 				</div>
 			</div>			
@@ -25,6 +26,8 @@
 			<form>
 				<p>Please type a name of a feature and click Add:</p>
 				<input class="inputfield" type="featureName" name ="featureName" />
+				<p> External: </p>
+				<input class="inputfield1" type="externalLink" name ="externalLink" />
 				<button class="add" name="add" type="button">Add</button> 
 			</form>
 		</div>
@@ -40,7 +43,7 @@
 					ID = data[index]['_id'];
 					argument = data[index]['_id'];
 					console.log(ID);
-					$('.content').append("<div class = 'features', id =" + data[index]['_id'] + "><div class = 'title'><br>" + data[index]['title'] + "<br></div><div class = 'external'><br>" + data[index]['external'] + "<button class = 'delete', onclick = "+"DeleteDomElement('"+argument+"')>Remove</button><br></div></div>");
+					$('.content').append("<div class = 'features', id =" + data[index]['_id'] + "><div class = 'title'><br>" + data[index]['title'] + "<br></div><div class = 'external'><br><a href='"+ data[index]['external'] + "'>" + data[index]['external'] + "</a><button class = 'delete', onclick = "+"DeleteDomElement('"+argument+"')>Remove</button><br></div></div>");
 				}); // ends each
 			}; // ends function
 
@@ -72,23 +75,30 @@
 
 			}; // ends function
 
-			function createFeature (toBeCreated) {
+			function createFeature (toBeCreated, externalToBeCreated) {
 				$.ajax({
 					type: 'POST',
-					url: 'http://infinite-citadel-8572.herokuapp.com/api/0.1/features/?title='+toBeCreated,
+					url: 'http://infinite-citadel-8572.herokuapp.com/api/0.1/features/?title='+toBeCreated+'&external='+externalToBeCreated,
 					success: function(data) {
 						console.log("Created Feature");
 						//var index = data.length-1;
 						console.log(data);
 						argument = data['_id'];
-						$('.content').append("<div class = 'features', id =" + data['_id'] + "><div class = 'title'><br>" + data['title'] + "<br></div><div class = 'external'><br>" + data['external'] + "<button class = 'delete', onclick = "+"DeleteDomElement('"+argument+"')>Remove</button><br></div></div>");
+						$('.content').append("<div class = 'features', id =" + data['_id'] + "><div class = 'title'><br>" + data['title'] + "<br></div><div class = 'external'><br><a href='"+ data['external'] + "'>" + data['external'] + "</a><button class = 'delete', onclick = "+"DeleteDomElement('"+argument+"')>Remove</button><br></div></div>");
 					}
 				})
 			}
 
 			$('.add').click(function(){
 				var x = $('.inputfield').val();
-				createFeature(x);
+				if (x === "") {
+					x = "No Title Given!"
+				};
+				var y = $('.inputfield1').val();
+				if (y === "") {
+					y = "N/A"
+				};
+				createFeature(x, y);
 			});
 
 		</script>
