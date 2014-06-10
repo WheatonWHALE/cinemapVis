@@ -24,11 +24,10 @@ a {
 	font-size: 50px;
 	text-align: center;
 	color: white;
-
 }
 
 .content {
-	background-color: #efefef;*/
+	background-color: #efefef;
 	width: 100%;
 	display: block;
 	text-align: center;
@@ -40,7 +39,13 @@ a {
 	border-style: outset;
     border-width: 5px;
 	border-color: #98bf21;
-	height: 50px
+	height: 75px
+}
+.dropdown {
+	background-color: #80969b;
+	color: white;
+	height: 59px;
+
 }
 
 .firstCol, .secCol {
@@ -48,7 +53,7 @@ a {
 	color: white;
 	background-color: #002b36;
 	text-align: center;
-	width: 49.9%;
+	width: 50%;
 	height: 50px;
 	font-size: 25px;
 }
@@ -88,6 +93,7 @@ a {
 
 .create {
 	background-color: #402817;
-	height: 150px;
+	height: 148px;
 	color: white;
+	text-align: center;
 }

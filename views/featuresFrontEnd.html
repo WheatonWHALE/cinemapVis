@@ -8,7 +8,6 @@
 
 	<body>
 		<div id ="header">
-		<p></p>
 			<p>Features</p>
 		</div>
 		<div class="content">
@@ -17,8 +16,10 @@
 					<p>Title</p>
 				</div>
 				<div class="secCol">
-
 					<p>External</p>
+				</div>
+				<div class ="dropdown">
+					<p class="idOfFeature">Update me!</p>
 				</div>
 			</div>			
 		</div> <!-- ends content div -->
@@ -44,7 +45,7 @@
 					argument = data[index]['_id'];
 					exargument = data[index]['external'];
 					console.log(ID);
-					$('.content').append("<div class = 'features', id =" + data[index]['_id'] + "><div class = 'title'><br>" + data[index]['title'] + "<br></div><div class = 'external'><br><a href='"+ data[index]['external'] + "'>" + data[index]['external'] + "</a><button class = 'update', onclick = \"updateFeature('"+argument+"', '"+exargument+"')\">Update</button><button class = 'delete', onclick = \"DeleteDomElement('"+argument+"')\">Remove</button><br></div></div>");
+					$('.content').append("<div class = 'features', id =" + data[index]['_id'] + "><div class = 'title'><br>" + data[index]['title'] + "<br></div><div class = 'external'><br><a href='"+ data[index]['external'] + "'>" + data[index]['external'] + "</a><button class = 'update', onclick = \"updateFeature('"+argument+"', '"+exargument+"')\">Update</button><button class = 'delete', onclick = \"DeleteDomElement('"+argument+"')\">Remove</button><br></div><div class='dropdown'><p class="+data[index]['_id']+">Update this Feature</div></div>");
 				}); // ends each
 			}; // ends function
 
