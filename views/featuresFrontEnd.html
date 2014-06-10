@@ -113,17 +113,26 @@
 					} // ends success
 				}); // ends ajax call
 			} // ends create feature
-
+			
+			function checkForValidTitle (titleValue, externalValue) {
+				if (titleValue === "") {
+					alert("No Title Given!");
+					// checkForValidTitle(titleValue, externalValue);
+				}
+				else {
+					if (externalValue === "") {
+						externalValue = "N/A"
+					};
+					createFeature(titleValue, externalValue);
+				};
+				
+			}
+			
 			$('.add').click(function(){
 				var x = $('.inputfield').val();
-				if (x === "") {
-					x = "No Title Given!"
-				};
 				var y = $('.inputfield1').val();
-				if (y === "") {
-					y = "N/A"
-				};
-				createFeature(x, y);
+				checkForValidTitle(x, y);
+				
 			});
 
 		</script>
