@@ -42,8 +42,9 @@
 				$.each(data, function(index, val) {
 					ID = data[index]['_id'];
 					argument = data[index]['_id'];
+					exargument = data[index]['external'];
 					console.log(ID);
-					$('.content').append("<div class = 'features', id =" + data[index]['_id'] + "><div class = 'title'><br>" + data[index]['title'] + "<br></div><div class = 'external'><br><a href='"+ data[index]['external'] + "'>" + data[index]['external'] + "</a><button class = 'update', onclick = "+"updateFeature('"+argument+"')>Update</button><button class = 'delete', onclick = "+"DeleteDomElement('"+argument+"')>Remove</button><br></div></div>");
+					$('.content').append("<div class = 'features', id =" + data[index]['_id'] + "><div class = 'title'><br>" + data[index]['title'] + "<br></div><div class = 'external'><br><a href='"+ data[index]['external'] + "'>" + data[index]['external'] + "</a><button class = 'update', onclick = \"updateFeature('"+argument+"', '"+exargument+"')\">Update</button><button class = 'delete', onclick = \"DeleteDomElement('"+argument+"')\">Remove</button><br></div></div>");
 				}); // ends each
 			}; // ends function
 
@@ -64,36 +65,39 @@
 			 		url: 'http://infinite-citadel-8572.herokuapp.com/api/0.1/features/'+featureToDelete,
 			 		success: function(data) {
 			 			console.log("has been deleted!");
-			 		}
-			 	});
-			};
+			 		} // ends success
+			 	}); // ends Ajax call
+			}; //ends deleteFromDatabase
 
 			function DeleteDomElement (idToDelete) {
 			 	console.log(idToDelete);
 			 	$("#"+idToDelete).remove();
 			 	deleteFromDatabase(idToDelete);
 
-			}; // ends function
+			}; // ends DeleteDomElement
 
-			function updateInDatabase (newTitle, id) {
+			function updateInDatabase (newTitle, id, newExternal) {
 				$.ajax({
 					type: 'PUT',
-					url: 'http://infinite-citadel-8572.herokuapp.com/api/0.1/features/'+id+"?title="+newTitle,
+					url: 'http://infinite-citadel-8572.herokuapp.com/api/0.1/features/'+id+'?title='+newTitle+'&external='+newExternal,
 					success: function(data) {
 						console.log("Created Feature");
 						console.log(data);
 						argument = data['_id'];
-						$("#"+id).html("<div class = 'features', id =" + data['_id'] + "><div class = 'title'><br>" + data['title'] + "<br></div><div class = 'external'><br><a href='"+ data['external'] + "'>" + data['external'] + "</a><button class = 'update', onclick = "+"updateFeature('"+argument+"')>Update</button><button class = 'delete', onclick = "+"DeleteDomElement('"+argument+"')>Remove</button><br></div></div>");
-					}
-				})
-				// body...
-			}
+						exargument = data['external'];
+						$("#"+id).html("<div class = 'features', id =" + data['_id'] + "><div class = 'title'><br>" + data['title'] + "<br></div><div class = 'external'><br><a href='"+ data['external'] + "'>" + data['external'] + "</a><button class = 'update', onclick = \"updateFeature('"+argument+"', '"+exargument+"')\">Update</button><button class = 'delete', onclick = \"DeleteDomElement('"+argument+"')\">Remove</button><br></div></div>");
+					} // ends success
+				}); // ends ajax call
+			} // ends updateInDatabase
 
-			function updateFeature (idToUpdate) {
+			function updateFeature (idToUpdate, externalToUpdate) {
 				console.log(idToUpdate); // the Id of the title to be renamed
 				var updatedIdName = prompt("Enter a Title: ", "Tilte here"); // new title name
-				updateInDatabase(updatedIdName, idToUpdate);
-			
+				var updateExternal = prompt("Enter a new External link: ");
+				if (updateExternal === "") {
+					var updateExternal = externalToUpdate;
+				};
+				updateInDatabase(updatedIdName, idToUpdate, updateExternal);
 			} // ends updateFeature
 
 			function createFeature (toBeCreated, externalToBeCreated) {
@@ -102,13 +106,13 @@
 					url: 'http://infinite-citadel-8572.herokuapp.com/api/0.1/features/?title='+toBeCreated+'&external='+externalToBeCreated,
 					success: function(data) {
 						console.log("Created Feature");
-						//var index = data.length-1;
 						console.log(data);
 						argument = data['_id'];
-						$('.content').append("<div class = 'features', id =" + data['_id'] + "><div class = 'title'><br>" + data['title'] + "<br></div><div class = 'external'><br><a href='"+ data['external'] + "'>" + data['external'] + "</a><button class = 'update', onclick = "+"updateFeature('"+argument+"')>Update</button><button class = 'delete', onclick = "+"DeleteDomElement('"+argument+"')>Remove</button><br></div></div>");
-					}
-				})
-			}
+						exargument = data['external'];
+						$('.content').append("<div class = 'features', id =" + data['_id'] + "><div class = 'title'><br>" + data['title'] + "<br></div><div class = 'external'><br><a href='"+ data['external'] + "'>" + data['external'] + "</a><button class = 'update', onclick = \"updateFeature('"+argument+","+exargument+"')\">Update</button><button class = 'delete', onclick = \"DeleteDomElement('"+argument+"')\">Remove</button><br></div></div>");
+					} // ends success
+				}); // ends ajax call
+			} // ends create feature
 
 			$('.add').click(function(){
 				var x = $('.inputfield').val();
