@@ -59,9 +59,10 @@
 					titleArgument = data[index]['title'];
 					console.log(ID);
 					// $('.content').append("<div class = 'features', id =" + data[index]['_id'] + "><div class = 'title'><br>" + data[index]['title'] + "<br></div><div class = 'external'><br><a href='"+ data[index]['external'] + "'>" + data[index]['external'] + "</a><button class = 'update', onclick = \"updateFeature('"+argument+"', '"+exargument+"')\">Update</button><button class = 'delete', onclick = \"DeleteDomElement('"+argument+"')\">Remove</button><br></div></div>");
-					$('.content').append("<div class = 'features', id =" + data[index]['_id'] + "><div class = 'title'><br>" + data[index]['title'] + "<br></div><div class = 'external'><br><a href='"+ data[index]['external'] + "'>" + data[index]['external'] + "</a><br></div><div class ='arrow', onclick = \"CreateOptions('"+argument+"', '"+exargument+"', '"+titleArgument+"')\">&#8628;</div></div>");
+					$('.content').append("<div class = 'features', id =" + data[index]['_id'] + "><div class = 'title'><br>" + data[index]['title'] + "<br></div><div class = 'external'><br><a href='"+ data[index]['external'] + "'>" + data[index]['external'] + "</a><br></div><div class ='arrow', id ='The"+argument+"', onclick = \"CreateOptions('"+argument+"', '"+exargument+"', '"+titleArgument+"')\">&#8628;</div></div>");
 				}); // ends each
 			}; // ends function
+
 //================================================================================================================================================================
 
 //---------------------------------------------------
@@ -107,18 +108,13 @@
 			} // ends updateInDatabase
 
 			function updateFeature (idToUpdate, externalToUpdate, titleToUpdate) {
+				console.log("===================================================");
+				console.log("Inside updateFeature")
 				console.log(idToUpdate); // the Id of the title to be renamed
 				console.log(externalToUpdate);
 				console.log(titleToUpdate);
+				console.log("===================================================")
 			
-				var updatedIDName = $('.updateInputfield').val();
-				var updateExternal = $('.updateInputfield1').val();
-				if (updatedIDName === "") {
-
-				};
-				if (updateExternal === "") {
-					updateExternal = externalToUpdate;
-				};
 				updateInDatabase(updatedIdName, idToUpdate, updateExternal);
 			} // ends updateFeature
 
@@ -173,13 +169,34 @@
 // ------------------------------------------------------------------------------
 
 			function CreateOptions (id, external, title) {
+				console.log("==========================================");
+				console.log("Inside CreateOptions")
 				console.log(id);
 				console.log(title);
 				console.log(external);
-				$("<div class='dropDown'><form><p>Please type a name of a feature and click Add:</p><input class='updateInputfield' type='updateFeatureName' name ='updateFeatureName'/><p>External:</p><input class='updateInputfield1' type='updateExternalLink' name ='updateExternalLink' /><button class = 'update', onclick = \"updateFeature('"+id+","+external+"')\">Update</button></form>").appendTo("#"+id);
-				$(".arrow").html("<div class ='arrow', onclick = \"HideOptions('"+id+"', '"+external+"', '"+title+"')\">&#8624;</div>");
+				console.log("==========================================");
+				
+				$("#The"+id).html("<div class ='arrow', onclick = \"HideOptions('"+id+"', '"+external+"', '"+title+"')\">&#8624;</div>");
+				
+				$("<div class='dropDown'><form><p>Please type a name of a feature and click Add:</p><input class='updateInputfield' type='updateFeatureName' name ='updateFeatureName'/><p>External:</p><input class='updateInputfield1' type='updateExternalLink' name ='updateExternalLink' /><button class = 'update'>Update</button></form></div>").appendTo("#"+id);
 
 			} // ends createOptions function
+
+			$('.update').click(function(event){
+				event.preventDefault();
+				cosole.log(id);
+				var updatedName = $('.updateInputfield').val();
+				var updateExternal = $('.updateInputfield1').val();
+				if (updatedName === "") {
+					alert("Title wasn't updated!")
+				}
+				else{
+					if (updateExternal === "") {
+						updateExternal = externalToUpdate;
+					};
+				};
+				
+			})
 
 //================================================================================================================================================================			
 			
