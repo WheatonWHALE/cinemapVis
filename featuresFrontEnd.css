@@ -39,14 +39,14 @@ a {
 	border-style: outset;
     border-width: 5px;
 	border-color: #98bf21;
-	height: 75px
+	height: auto;
 }
-.dropdown {
+/*.dropdown {
 	background-color: #80969b;
 	color: white;
 	height: 59px;
 
-}
+}*/
 
 .firstCol, .secCol {
 	float: left;
@@ -54,9 +54,14 @@ a {
 	background-color: #002b36;
 	text-align: center;
 	width: 50%;
-	height: 50px;
-	font-size: 25px;
+	/*height: auto; 45px;*/
+	/*font-size: 25px;*/
 }
+
+#trying {
+	width: 45%;
+}
+
 
 .title {
 	float: left;
@@ -64,17 +69,17 @@ a {
 	background-color: #002b36;
 	text-align: center;
 	width: 49.9%;
-	height: 50px;
+	/*height: 50px;*/
 
 }
 
 .external {
-	float: right;
+	float: left;
 	color: white;
 	background-color: #002b36;
 	text-align: center;
-	width: 49.9%;
-	height: 50px;
+	width: 44.9%;
+	/*height: 50px;*/
 }
 
 .update {
@@ -96,4 +101,14 @@ a {
 	height: 148px;
 	color: white;
 	text-align: center;
+}
+
+.arrow {
+	font-size: 35px;
+	color: #19404a;
+	background-color: #002b36; 
+	/*font-weight: 35px;*/
+	text-align: center;
+	/*height: 50px;*/
+
 }
